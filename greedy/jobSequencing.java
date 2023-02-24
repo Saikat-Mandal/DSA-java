@@ -33,6 +33,6 @@ public class jobSequencing {
             }
         }
 
-        System.out.println(seq);
+        // System.out.println(seq);
     }
 }
