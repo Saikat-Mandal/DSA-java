@@ -1,12 +1,14 @@
 
 public class arrays {
     public static void backtrack(int[] arr, int i, int val) {
-        if (i == arr.length) {
+
+        if (i == arr.length)
             return;
-        }
+
         arr[i] = val;
         backtrack(arr, i + 1, val + 1);
-        arr[i] = arr[i] - 2;
+        arr[i] = val - 2;
+
     }
 
     public static void display(int[] arr) {

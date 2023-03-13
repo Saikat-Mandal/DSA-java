@@ -290,6 +290,36 @@ public class TREE {
             }
         }
 
+        // bottom view
+
+        public void bottomView(Node root) {
+            Queue<Info> q = new LinkedList<>();
+            HashMap<Integer, Node> map = new HashMap<>();
+            int min = 0, max = 0;
+            if (root == null) {
+                return;
+            } else {
+                q.add(new Info(root, 0));
+            }
+
+            while (!q.isEmpty()) {
+                Info cur = q.remove();
+
+                map.put(cur.dist, cur.node);
+
+                if (cur.node.left != null) {
+                    q.add(new Info(cur.node.left, cur.dist - 1));
+                    min = Math.min(min, cur.dist - 1);
+                }
+                if (cur.node.right != null) {
+                    q.add(new Info(cur.node.right, cur.dist + 1));
+                    max = Math.max(max, cur.dist + 1);
+                }
+            }
+            for (int i = min; i <= max; i++) {
+                System.out.print(map.get(i).data + " ");
+            }
+        }
         // print nodes at kth level
         // public static void printNodes(Node root, int k) {
         // if (root == null)
@@ -336,21 +366,21 @@ public class TREE {
         }
 
         // LCA using list
-        // public static Node LCA(Node root, int n1, int n2) {
-        // ArrayList<Node> path1 = new ArrayList<>();
-        // ArrayList<Node> path2 = new ArrayList<>();
+        public static Node LCA(Node root, int n1, int n2) {
+            ArrayList<Node> path1 = new ArrayList<>();
+            ArrayList<Node> path2 = new ArrayList<>();
 
-        // getPath(root, path1, n1);
-        // getPath(root, path2, n2);
-        // int i = 0;
-        // for (; i < path1.size() && i < path2.size(); i++) {
-        // if (path1.get(i) != path2.get(i)) {
-        // break;
-        // }
-        // }
-        // Node lca = path1.get(i - 1);
-        // return lca;
-        // }
+            // getPath(root, path1, n1);
+            // getPath(root, path2, n2);
+            int i = 0;
+            for (; i < path1.size() && i < path2.size(); i++) {
+                if (path1.get(i) != path2.get(i)) {
+                    break;
+                }
+            }
+            Node lca = path1.get(i - 1);
+            return lca;
+        }
 
         // LCA recursively without list
         public static Node LCA2(Node root, int n1, int n2) {
@@ -452,12 +482,45 @@ public class TREE {
             return max + 1;
         }
 
+        // zigzag transversal
+        public ArrayList<Integer> zigZagTraversal(Node root) {
+            if (root == null)
+                return null;
+            ArrayList<Integer> l = new ArrayList<>();
+            boolean level = true;
+            Queue<Node> q = new LinkedList<>();
+            q.add(root);
+            while (!q.isEmpty()) {
+                Stack<Integer> st = new Stack<>();
+                while (!q.isEmpty()) {
+                    Node cur = q.remove();
+                    if (level) {
+                        l.add(root.data);
+                    } else {
+                        st.push(root.data);
+                    }
+                    if (cur.left != null) {
+                        q.add(cur.left);
+                    }
+                    if (cur.right != null) {
+                        q.add(cur.right);
+                    }
+                }
+                while (!st.isEmpty()) {
+                    l.add(st.pop());
+                }
+                level = !level;
+            }
+            return l;
+
+        }
+
     }
 
     public static void main(String[] args) {
         int Nodes[] = { 1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1 };
         BinaryTree t = new BinaryTree();
         Node root = t.buildTree(Nodes);
-        System.out.println(t.lb(root));
+
     }
 }

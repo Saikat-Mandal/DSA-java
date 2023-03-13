@@ -20,8 +20,20 @@ public class subsets {
         helper(l, nums, temp, i + 1);
     }
 
+    public static void subsets(String ip, String op, int i) {
+        if (i == ip.length()) {
+            System.out.print(op + " ");
+            return;
+        }
+
+        subsets(ip, op + ip.charAt(i), i + 1);
+        subsets(ip, op, i + 1);
+    }
+
     public static void main(String[] args) {
         int[] nums = { 1, 2, 3 };
         System.out.println(subsets(nums));
+
+        // subsets("abc", "", 0);
     }
 }

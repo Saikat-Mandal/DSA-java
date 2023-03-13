@@ -4,6 +4,28 @@ import java.util.Comparator;
 
 public class activitySelection {
 
+    public static int activitySelection(int start[], int end[], int n) {
+        int activities[][] = new int[end.length][3];
+        for (int i = 0; i < start.length; i++) {
+            activities[i][0] = i;
+            activities[i][1] = start[i];
+            activities[i][2] = end[i];
+        }
+
+        Arrays.sort(activities, Comparator.comparingDouble(o -> o[2]));
+
+        int count = 0;
+        count = 1;
+        int EndTime = activities[0][2];
+        for (int i = 1; i < activities.length; i++) {
+            if (activities[i][1] > EndTime) {
+                count++;
+                EndTime = activities[i][2];
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         int start[] = { 1, 3, 0, 5, 8, 5 };
         int end[] = { 2, 4, 6, 7, 9, 9 };
@@ -35,9 +57,11 @@ public class activitySelection {
             }
         }
 
-        System.out.println("max activity: " + count);
+        // System.out.println("max activity: " + count);
 
-        System.out.println(l);
+        // System.out.println(l);
+
+        System.out.println(activitySelection(start, end, start.length));
 
     }
 }
