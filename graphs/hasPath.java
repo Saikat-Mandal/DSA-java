@@ -48,7 +48,8 @@ public class hasPath {
 
     }
 
-    public static boolean hasPaths(ArrayList<Edge> graph[], int s, int target, boolean vis[]) {
+    public static boolean hasPaths(ArrayList<Edge> graph[], int s, int target,
+            boolean vis[]) {
         if (s == target) {
             return true;
         }
@@ -64,11 +65,30 @@ public class hasPath {
         return false;
     }
 
+    public static boolean hasPaths2(ArrayList<Edge> graph[], int s, int target, boolean vis[]) {
+        if (s == target) {
+            return true;
+        }
+        int cur = s;
+        vis[cur] = true;
+        for (int i = 0; i < graph[cur].size(); i++) {
+
+            if (!vis[graph[cur].get(i).dest]) {
+                if (hasPaths2(graph, graph[cur].get(i).dest, target, vis)) {
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         int v = 7;
         ArrayList<Edge>[] graph = new ArrayList[v];
         createGraph(graph);
         boolean[] vis = new boolean[graph.length];
-        System.out.println(hasPaths(graph, 0, 5, vis));
+        System.out.println(hasPaths2(graph, 0, 5, vis));
+        // System.out.println(hasPaths2(graph, 0, 5, vis));
     }
 }

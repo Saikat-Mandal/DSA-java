@@ -3,11 +3,9 @@ import java.util.Collections;
 
 public class jobSequencing {
     static class Job {
-        int deadline;
-        int profit;
-        int id;
+        int deadline, profit, id;
 
-        Job(int id, int deadline, int profit) {
+        Job(int deadline, int profit, int id) {
             this.deadline = deadline;
             this.profit = profit;
             this.id = id;
@@ -15,24 +13,24 @@ public class jobSequencing {
     }
 
     public static void main(String[] args) {
-        int[][] jobInfo = { { 4, 20 }, { 1, 10 }, { 1, 40 }, { 1, 30 } };
-        ArrayList<Job> job = new ArrayList<>();
-        for (int i = 0; i < jobInfo.length; i++) {
-            job.add(new Job(i, jobInfo[i][0], jobInfo[i][1]));
+        int jobsInfo[][] = { { 4, 20 }, { 1, 20 }, { 1, 40 }, { 1, 30 } };
+
+        ArrayList<Job> jobs = new ArrayList<>();
+
+        for (int i = 0; i < jobsInfo.length; i++) {
+            jobs.add(new Job(jobsInfo[i][0], jobsInfo[i][1], i));
         }
 
-        Collections.sort(job, (a, b) -> b.profit - a.profit); // decending order profit sort
+        Collections.sort(jobs, (a, b) -> b.profit - a.profit);
 
-        ArrayList<Integer> seq = new ArrayList<>();
+        ArrayList<Integer> res = new ArrayList<>();
         int time = 0;
-        for (int i = 0; i < job.size(); i++) {
-            Job cur = job.get(i);
-            if (cur.deadline > time) {
-                seq.add(cur.id);
+        for (int i = 0; i < jobs.size(); i++) {
+            if (time < jobs.get(i).deadline) {
                 time++;
+                res.add(jobs.get(i).id);
             }
         }
-
-        // System.out.println(seq);
+        System.out.println(res);
     }
 }
