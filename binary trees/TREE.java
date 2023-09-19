@@ -366,20 +366,58 @@ public class TREE {
         }
 
         // LCA using list
+        // public static Node LCA(Node root, int n1, int n2) {
+        // ArrayList<Node> path1 = new ArrayList<>();
+        // ArrayList<Node> path2 = new ArrayList<>();
+
+        // // getPath(root, path1, n1);
+        // // getPath(root, path2, n2);
+        // int i = 0;
+        // for (; i < path1.size() && i < path2.size(); i++) {
+        // if (path1.get(i) != path2.get(i)) {
+        // break;
+        // }
+        // }
+        // Node lca = path1.get(i - 1);
+        // return lca;
+        // }
+
         public static Node LCA(Node root, int n1, int n2) {
             ArrayList<Node> path1 = new ArrayList<>();
             ArrayList<Node> path2 = new ArrayList<>();
 
-            // getPath(root, path1, n1);
-            // getPath(root, path2, n2);
-            int i = 0;
-            for (; i < path1.size() && i < path2.size(); i++) {
-                if (path1.get(i) != path2.get(i)) {
+            getPath(root, path1, n1);
+            getPath(root, path2, n2);
+
+            int i;
+            for (i = 0; i < path1.size() && i < path2.size(); i++) {
+                if (path1.get(i) != path2.get(i))
                     break;
-                }
             }
+
             Node lca = path1.get(i - 1);
+
             return lca;
+
+        }
+
+        public static boolean getPath(Node root, ArrayList<Node> res, int a) {
+            if (root == null)
+                return false;
+            res.add(root);
+            if (root.data == a)
+                return true;
+
+            boolean foundLeft = getPath(root.left, res, a);
+            boolean foundRight = getPath(root.right, res, a);
+
+            if (foundLeft || foundRight)
+                return true;
+
+            res.remove(res.size() - 1);
+
+            return false;
+
         }
 
         // LCA recursively without list
@@ -399,23 +437,23 @@ public class TREE {
         }
 
         // distance between 2 nodes
-        public static int getPath(Node root, int a) {
-            if (root == null)
-                return -1;
-            if (root.data == a)
-                return 0;
-            int l = getPath(root.left, a);
-            int r = getPath(root.right, a);
-            return 1 + (l != 0 ? l : r);
-        }
+        // public static int getPath(Node root, int a) {
+        // if (root == null)
+        // return -1;
+        // if (root.data == a)
+        // return 0;
+        // int l = getPath(root.left, a);
+        // int r = getPath(root.right, a);
+        // return 1 + (l != 0 ? l : r);
+        // }
 
-        public static int findDist(Node root, int a, int b) {
-            Node lca = LCA2(root, a, b);
-            int path1 = getPath(lca, a);
-            int path2 = getPath(lca, b);
+        // public static int findDist(Node root, int a, int b) {
+        // Node lca = LCA2(root, a, b);
+        // int path1 = getPath(lca, a);
+        // int path2 = getPath(lca, b);
 
-            return path1 + path2;
-        }
+        // return path1 + path2;
+        // }
 
         // path sum
 
@@ -515,6 +553,18 @@ public class TREE {
 
         }
 
+        // dist from root
+        public static int dis(Node root, int k) {
+            if (root == null)
+                return -1;
+
+            int dist = -1;
+            if ((root.data == k) || (dist = dis(root.left, k)) >= 0 || (dist = dis(root.right, k)) >= 0) {
+                return dist + 1;
+            }
+            return dist;
+        }
+
     }
 
     public static void main(String[] args) {
@@ -522,5 +572,6 @@ public class TREE {
         BinaryTree t = new BinaryTree();
         Node root = t.buildTree(Nodes);
 
+        System.out.println(t.dis(root, 5));
     }
 }
